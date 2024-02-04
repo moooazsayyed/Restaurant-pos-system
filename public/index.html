@@ -27,7 +27,7 @@
       <span class="logo_name">RestaurantMaster</span>
     </div>
     <ul class="nav-links">
-      
+
       <li>
         <a href="javascript:void(0)">
           <i class='bx bx-grid-alt'></i>
@@ -54,12 +54,16 @@
             <i class='bx bx-book-alt'></i>
             <span class="link_name">Products</span>
           </a>
+          <i class='bx bxs-chevron-down arrow'></i>
         </div>
         <ul class="sub-menu">
           <li><a class="link_name" href="javascript:void(0)" onclick="navigate('products')">Products</a></li>
-
+            <ul class="sub-menu">
+              <li><a href="products-add.html">Add Products</a></li>
+            </ul>
         </ul>
       </li>
+
       <li>
         <a href="#">
           <i class='bx bx-pie-chart-alt-2'></i>
@@ -127,7 +131,7 @@
     </div>
   </section>
 
-  
+
   <script>
     let arrow = document.querySelectorAll(".arrow");
     for (var i = 0; i < arrow.length; i++) {
@@ -143,30 +147,30 @@
       sidebar.classList.toggle("close");
     });
 
-//code for navigation
-function navigate(page) {
-  const pageContent = document.getElementById('pageContent');
-  
-  console.log(`Navigating to ${page}.html`);
-  fetch(`${page}.html`)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Error fetching ${page}.html. Status: ${response.status}`);
-      }
-      return response.text();
-    })
-    .then(html => {
-      console.log(`Successfully loaded ${page}.html`);
-      pageContent.innerHTML = html;
-    })
-    .catch(error => {
-      console.error(`Error:`, error.message);
-      console.error(`Error loading ${page}.html`);
-      pageContent.textContent = 'Error loading page.';
-    });
-  
-  return false; // Prevent default action of the link
-}
+    //code for navigation
+    function navigate(page) {
+      const pageContent = document.getElementById('pageContent');
+
+      console.log(`Navigating to ${page}.html`);
+      fetch(`${page}.html`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`Error fetching ${page}.html. Status: ${response.status}`);
+          }
+          return response.text();
+        })
+        .then(html => {
+          console.log(`Successfully loaded ${page}.html`);
+          pageContent.innerHTML = html;
+        })
+        .catch(error => {
+          console.error(`Error:`, error.message);
+          console.error(`Error loading ${page}.html`);
+          pageContent.textContent = 'Error loading page.';
+        });
+
+      return false; // Prevent default action of the link
+    }
 
   </script>
 </body>

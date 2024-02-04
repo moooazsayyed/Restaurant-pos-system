@@ -6,7 +6,7 @@ const app = express();
 const port = 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('public'));//to serve our public folder throuhgh html
+app.use(express.static('public'));//to serve our public folder through html
 
 
 //APi middleware
@@ -15,7 +15,7 @@ app.use(express.urlencoded());// this is to decode data to send through html for
 let products = [];
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'products.html'));
+    res.sendFile(path.join(__dirname, 'public', 'products-add.html'));
 });
 
 app.post('/add-product', (req, res) => {
