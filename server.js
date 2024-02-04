@@ -1,50 +1,26 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
-const ejs = require('ejs');
-const mongoose = require('mongoose');
 
 const app = express();
 const port = 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('public'));
-app.set('view engine', 'ejs');
+app.use(express.static('public'));//to serve our public folder throuhgh html
+let products = [];
 
-mongoose.connect('mongodb://localhost:27017/productsDB', { useNewUrlParser: true, useUnifiedTopology: true });
 
-const productSchema = new mongoose.Schema({
-    categoryName: String,
-    productName: String,
-    productPrice: Number,
+//APi middleware
+app.use(express.json());//this is to accept data in json format
+app.use(express.urlencoded());// this is to decode data to send through html form
+
+app.get('/get-product', (req, res) => {
+    res.sendFile(path.join(__dirname, '+public/products-add.html'));
 });
 
-const Product = mongoose.model('Product', productSchema);
-
-app.get('/get-product', async (req, res) => {
-    try {
-        const products = await Product.find();
-        res.render('products', { products });
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Internal Server Error');
-    }
-});
-
-app.post('/add-product', async (req, res) => {
-    const newProduct = new Product({
-        categoryName: req.body.categoryName,
-        productName: req.body.productName,
-        productPrice: req.body.productPrice
-    });
-
-    try {
-        await newProduct.save();
-        res.redirect('/get-product');
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Internal Server Error');
-    }
+app.post('/add-product', (req, res) => {
+    console.log(req.body);//the data we get is in the body of request
+    res.send(req.body);
 });
 
 const PORT = process.env.PORT || 3000;
