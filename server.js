@@ -15,7 +15,7 @@ app.use(express.urlencoded());// this is to decode data to send through html for
 let products = [];
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'products.html'));
+    res.sendFile(path.join(__dirname, 'public', 'products-add.html'));
 });
 
 app.post('/add-product', (req, res) => {
