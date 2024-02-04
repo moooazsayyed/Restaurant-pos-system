@@ -24,7 +24,12 @@
   padding: 0;
   box-sizing: border-box;
 }
-
+#pageContent {
+  display: flex; 
+  justify-content: flex-end;
+  align-items: start;
+ 
+}
 body {
   height: 100vh;
   background-color: var(--body-color);

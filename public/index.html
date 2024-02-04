@@ -5,7 +5,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RestaurantMaster mei dweffffrfffecd </title>
+  <title>RestaurantMaster</title>
   <!-- External css -->
   <link rel="stylesheet" href="styles.css">
   <!-- Box Css -->
@@ -14,6 +14,9 @@
 </head>
 
 <body>
+  <div id="pageContent">
+    <!-- Content will be dynamically loaded here -->
+  </div>
   <div class="sidebar close">
     <div class="logo-details">
       <div class="image">
@@ -24,36 +27,37 @@
       <span class="logo_name">RestaurantMaster</span>
     </div>
     <ul class="nav-links">
+      
       <li>
-        <a href="#">
+        <a href="javascript:void(0)">
           <i class='bx bx-grid-alt'></i>
           <span class="link_name">Dashboard</span>
         </a>
         <ul class="sub-menu blank">
-          <li><a class="link_name" href="#">Category</a></li>
+          <li><a class="link_name" href="javascript:void(0)" onclick="navigate('dashboard')">Dashboard</a></li>
         </ul>
       </li>
       <li>
         <div class="iocn-link">
-          <a href="#">
+          <a href="javascript:void(0)">
             <i class='bx bx-collection'></i>
             <span class="link_name">Category</span>
           </a>
         </div>
         <ul class="sub-menu">
-          <li><a class="link_name" href="#">Category</a></li>
+          <li><a class="link_name" href="javascript:void(0)" onclick="navigate('Category')">Category</a></li>
         </ul>
       </li>
       <li>
         <div class="iocn-link">
-          <a href="#">
+          <a onclick="navigate('products')" href="javascript:void(0)">
             <i class='bx bx-book-alt'></i>
-            <span class="link_name">Posts</span>
+            <span class="link_name">Products</span>
           </a>
         </div>
         <ul class="sub-menu">
-          <li><a class="link_name" href="#">Posts</a></li>
-          
+          <li><a class="link_name" href="javascript:void(0)" onclick="navigate('products')">Products</a></li>
+
         </ul>
       </li>
       <li>
@@ -74,21 +78,7 @@
           <li><a class="link_name" href="#">Chart</a></li>
         </ul>
       </li>
-      <!-- <li>
-        <div class="iocn-link">
-          <a href="#">
-            <i class='bx bx-plug'></i>
-            <span class="link_name">Plugins</span>
-          </a>
 
-        </div>
-        <ul class="sub-menu">
-          <li><a class="link_name" href="#">Plugins</a></li>
-          <li><a href="#">UI Face</a></li>
-          <li><a href="#">Pigments</a></li>
-          <li><a href="#">Box Icons</a></li>
-        </ul>
-      </li> -->
       <li>
         <a href="#">
           <i class='bx bx-compass'></i>
@@ -137,7 +127,7 @@
     </div>
   </section>
 
-  <div class="one"></div>
+  
   <script>
     let arrow = document.querySelectorAll(".arrow");
     for (var i = 0; i < arrow.length; i++) {
@@ -152,8 +142,33 @@
     sidebarBtn.addEventListener("click", () => {
       sidebar.classList.toggle("close");
     });
+
+//code for navigation
+function navigate(page) {
+  const pageContent = document.getElementById('pageContent');
+  
+  console.log(`Navigating to ${page}.html`);
+  fetch(`${page}.html`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Error fetching ${page}.html. Status: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(html => {
+      console.log(`Successfully loaded ${page}.html`);
+      pageContent.innerHTML = html;
+    })
+    .catch(error => {
+      console.error(`Error:`, error.message);
+      console.error(`Error loading ${page}.html`);
+      pageContent.textContent = 'Error loading page.';
+    });
+  
+  return false; // Prevent default action of the link
+}
+
   </script>
-  <!-- <script src="script.js"></script> -->
 </body>
 
 </html>
