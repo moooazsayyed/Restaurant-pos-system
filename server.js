@@ -2,42 +2,50 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
+const mongoose = require('mongoose');
 
 const app = express();
 const port = 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('public'));//to serve our public folder throuhgh html
-app.set('view engine', 'ejs'); // Set EJS as the view engine
-let products = [];
+app.use(express.static('public'));
+app.set('view engine', 'ejs');
 
+mongoose.connect('mongodb://localhost:27017/productsDB', { useNewUrlParser: true, useUnifiedTopology: true });
 
-//APi middleware
-app.use(express.json());//this is to accept data in json format
-app.use(express.urlencoded());// this is to decode data to send through html form
-
-app.get('/get-product', (req, res) => {
-    res.sendFile(path.join(__dirname, '+public/products-add.html'));
+const productSchema = new mongoose.Schema({
+    categoryName: String,
+    productName: String,
+    productPrice: Number,
 });
 
-app.post('/add-product', (req, res) => {
-    const newProduct = {
+const Product = mongoose.model('Product', productSchema);
+
+app.get('/get-product', async (req, res) => {
+    try {
+        const products = await Product.find();
+        res.render('products', { products });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+app.post('/add-product', async (req, res) => {
+    const newProduct = new Product({
         categoryName: req.body.categoryName,
         productName: req.body.productName,
         productPrice: req.body.productPrice
-    };
-    products.push(newProduct);
-    res.redirect('/get-product');
-    // console.log(req.body);//the data we get is in the body of request
-    // res.send(req.body);
+    });
+
+    try {
+        await newProduct.save();
+        res.redirect('/get-product');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
 });
-try {
-    await newProduct.save(); // Save the new product to the database
-    res.redirect('/get-product');
-} catch (error) {
-    console.error(error);
-    res.status(500).send('Internal Server Error');
-}
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
